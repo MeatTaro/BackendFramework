@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Products</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <!--[if lt IE 7]>
+           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+       <![endif]-->
+
+        <div class="container mt-4">
+            <h1>Products Listing</h1>
+
+
+            <table class="table table-sm table-bordered ">
+                <thead>
+
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>ProductType</th>
+                    <!-- <th>Characteristic</th> -->
+                    <th scope="col" colspan="3">Action</th>
+                </tr>
+
+                </thead>
+
+                <tbody >
+                <!-- {{ range . }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td></td>
+                        <td></td>
+                        <td><a class="action" href="/index/view?sku={{.Sku}}">View</a></td>
+                        <td><a class="action" href="/index/update/form?sku={{.Sku}}">Edit</a></td>
+                        <td><a class="action" href="/index/delete?sku={{.Sku}}">Delete</a></td>
+                    </tr>
+                {{end}} -->
+                </tbody>
+
+
+
+            </table>
+            <!-- <a class="action btn btn-primary" href="/index/create/form">Add Product</a> -->
+
+        </div>
+
+        <script>
+            ////參考資料: https://developer.mozilla.org/zh-TW/docs/Learn/JavaScript/Objects/JSON
+
+        
+            const section = document.querySelector('tbody');
+            //針對要在變數中檢索的 url 或JSON 檔案，將其位址儲存起來。
+            var requestURL = "http://localhost:9090/v1/getall/";
+
+            //藉由 XMLHttpRequest（XHR）物件的方式來存取伺服器端的資料
+            //https://developer.mozilla.org/zh-TW/docs/Web/API/XMLHttpRequest
+            
+            var request = new XMLHttpRequest();//建立request
+            //用 open() 函式開啟request
+            //1.在設立網路請求時，應使用 HTTP 函式。因為這裡只要檢索簡單的資料，所以用 GET 就可以。
+            //2.URL 提供請求目的地 — 這也就是我們剛剛儲存的 JSON 檔案網址。
+            request.open('GET', requestURL);
+            
+
+            request.onload = function() {
+                //把一個JSON字串轉換成 JavaScript的數值或是物件
+                //https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+                var superHeroes = request.responseText;
+                console.log(superHeroes)
+                showHeroes(superHeroes);
+            }
+
+            //為 JSON 設定了 responseType，告知伺服器應回傳 JSON 物件
+            // request.responseType = 'json';
+            request.send();//send() 函式傳送請求
+            //等待由伺服器所回傳的反應
+            // request.onload = function() {
+            //   var superHeroes = request.response;
+            //   showHeroes(superHeroes);
+            // }
+
+            
+            function showHeroes(jsonObj) {
+
+              for(i = 0; i < jsonObj.length; i++) {
+                var myTr = document.createElement('tr');
+                var tD1 = document.createElement('td');
+                // var tD2 = document.createElement('td');
+        
+                tD1.textContent = jsonObj[i].producttype;
+                myTr.appendChild(tD1);
+                // myTr.appendChild(tD2);
+                
+                section.appendChild(myTr);
+              }
+            }
+            </script>
+    </body>
+</html>
